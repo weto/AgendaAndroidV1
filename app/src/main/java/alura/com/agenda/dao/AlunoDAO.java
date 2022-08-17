@@ -30,7 +30,7 @@ public class AlunoDAO implements Dao {
     public void delete(Aluno aluno) {
         for (Aluno a: alunos) {
             if(a.getId().equals(aluno.getId())) {
-                alunos.remove(alunos.indexOf(a));
+                alunos.remove(a);
                 break;
             }
         }
