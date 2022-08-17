@@ -74,7 +74,6 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
         if(itemId == R.id.activity_lista_alunos_menu_remover) {
-            Log.i("Clicandoooo", "onContextItemSelected: "+listaAlunosView);
             listaAlunosView.confirmaExclusaoAluno(menuInfo);
         }
         return super.onContextItemSelected(item);

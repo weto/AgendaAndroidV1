@@ -24,13 +24,11 @@ public class ListaAlunosAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        Log.i("Tamanho da lista", "getCount: " + alunos.size());
         return alunos.size();
     }
 
     @Override
     public Object getItem(int position) {
-        Log.i("getItem", "getItem: " + alunos.get(position));
         return alunos.get(position);
     }
 
@@ -50,7 +48,6 @@ public class ListaAlunosAdapter extends BaseAdapter {
     private void bindDados(View viewCriada, Aluno alunoDevolvido) {
         TextView nome = viewCriada.findViewById(R.id.item_aluno_nome);
         nome.setText(alunoDevolvido.getNome());
-
         TextView telefone = viewCriada.findViewById(R.id.item_aluno_telefone);
         telefone.setText(alunoDevolvido.getTelefone());
     }

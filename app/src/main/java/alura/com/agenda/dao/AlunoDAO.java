@@ -1,14 +1,17 @@
 package alura.com.agenda.dao;
 
+import android.util.Log;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import alura.com.agenda.model.Aluno;
 
-public class AlunoDAO implements Dao {
+public class AlunoDAO implements Dao, Serializable {
 
-    private static final List<Aluno> alunos = new ArrayList<>();
+    private List<Aluno> alunos = new ArrayList<>();
 
     public void salvar(Aluno aluno) {
         UUID uuid = UUID.randomUUID();
