@@ -8,7 +8,7 @@ import alura.com.agenda.model.Aluno;
 
 public class AlunoDAO implements Dao {
 
-    private static final List<Aluno> alunos = new ArrayList();
+    private static final List<Aluno> alunos = new ArrayList<>();
 
     public void salvar(Aluno aluno) {
         UUID uuid = UUID.randomUUID();

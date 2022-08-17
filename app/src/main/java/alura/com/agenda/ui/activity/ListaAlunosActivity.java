@@ -1,10 +1,16 @@
 package alura.com.agenda.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -16,14 +22,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import alura.com.agenda.R;
 import alura.com.agenda.dao.AlunoDAO;
 import alura.com.agenda.model.Aluno;
+import alura.com.agenda.ui.adapter.ListaAlunosAdapter;
 
 public class ListaAlunosActivity extends AppCompatActivity implements Constantes {
     private final AlunoDAO dao = new AlunoDAO();
     private ListView alunosListView;
-    private ArrayAdapter<Aluno> adapter;
+    private ListaAlunosAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,8 +71,7 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
     }
 
     private void atualizaAlunos() {
-        adapter.clear();
-        adapter.addAll(dao.todos());
+        adapter.atualiza(dao.todos());
     }
 
     private void carregaTodosalunos() {
@@ -72,9 +81,7 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
 
     private void carregaDados() {
         alunosListView = findViewById(R.id.activity_lista_alunos_listview);
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                dao.todos());
+        adapter = new ListaAlunosAdapter(this);
         alunosListView.setAdapter(adapter);
         registerForContextMenu(alunosListView);
     }
@@ -84,10 +91,20 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
         if(itemId == R.id.activity_lista_alunos_menu_remover) {
-            Aluno alunoEscolhido = adapter.getItem(menuInfo.position);
-            remove(alunoEscolhido);
+            confirmaExclusaoAluno(menuInfo);
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void confirmaExclusaoAluno(AdapterView.AdapterContextMenuInfo menuInfo) {
+        new AlertDialog.Builder(this)
+            .setTitle("Tem certeza que deseja excluir o aluno?")
+            .setPositiveButton("Sim", (dialog, which) -> {
+                Aluno alunoEscolhido = (Aluno) adapter.getItem(menuInfo.position);
+                remove(alunoEscolhido);
+            })
+            .setNegativeButton("Não", null)
+            .show();
     }
 
     private void remove(Aluno alunoSelecionado) {
