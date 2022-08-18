@@ -12,6 +12,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,6 +21,7 @@ import alura.com.agenda.dao.AlunoDAO;
 import alura.com.agenda.model.Aluno;
 import alura.com.agenda.ui.ListaAlunosView;
 import alura.com.agenda.ui.adapter.ListaAlunosAdapter;
+import alura.com.agenda.ui.viewmodel.AlunoViewModel;
 
 public class ListaAlunosActivity extends AppCompatActivity implements Constantes {
     private final AlunoDAO dao = new AlunoDAO();
@@ -33,6 +35,8 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
         setTitle(TITULO_APPBAR_PRINCIPAL);
         carregaTodosalunos();
         configuraFabNovoAluno();
+        AlunoViewModel provedor = new ViewModelProvider(this).get(AlunoViewModel.class);
+        Log.i("viewmodel", "onCreate: "+provedor.toString());
     }
 
     @Override
