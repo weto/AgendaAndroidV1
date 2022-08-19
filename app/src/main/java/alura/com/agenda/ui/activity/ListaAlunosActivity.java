@@ -1,6 +1,7 @@
 package alura.com.agenda.ui.activity;
 
 import android.content.Intent;
+import android.database.Observable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -12,9 +13,12 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 import alura.com.agenda.R;
 import alura.com.agenda.model.Aluno;
@@ -26,6 +30,7 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
     private ListView alunosListView;
     private AlunoViewModel provedor;
     private AlunoViewModelFactor factory;
+    private Observer<List<Aluno>> nameObserver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,9 +71,23 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
         alunosListView = findViewById(R.id.activity_lista_alunos_listview);
         this.factory = new AlunoViewModelFactor(new AlunoRepository(this));
         this.provedor = new ViewModelProvider(this, factory).get(AlunoViewModel.class);
+        chamadaLiveData();
         this.provedor.listagemAlunoInicial(alunosListView);
         registerForContextMenu(alunosListView);
     }
+
+    private void chamadaLiveData() {
+//        Depois enteder como funciona live data
+//        nameObserver = new Observer<List<Aluno>>(){
+//            @Override
+//            public void onChanged(List<Aluno> alunos) {
+//                alunos.add(new Aluno("teste","sdsd","testee"));
+//                Log.i("nameObserver", "onChanged: "+alunos.size());
+//            }
+//        };
+//        this.provedor.listagemAlunoInicial(alunosListView).observe(this, nameObserver);
+    }
+
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {

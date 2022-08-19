@@ -4,7 +4,11 @@ import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.List;
 
 import alura.com.agenda.model.Aluno;
 import alura.com.agenda.repository.AlunoRepository;
@@ -25,9 +29,15 @@ public class AlunoViewModel extends ViewModel {
     }
 
     public void listagemAlunoInicial(ListView alunosListView) {
-        Log.i("DEBUGANDOOOOOOO", "listagemAlunoInicial Factory: ");
+        Log.i("DEBUGANDOOOOOOO", "Buscando aluno no banco de dados ########");
         alunoRepository.listagemAlunoInicial(alunosListView);
     }
+
+//    public MutableLiveData<List<Aluno>> listagemAlunoInicial(ListView alunosListView) {
+//        MutableLiveData<List<Aluno>> listaAluno = new MutableLiveData<List<Aluno>>();
+//
+//        return listaAluno;
+//    }
 
     public void confirmaExclusaoAluno(AdapterView.AdapterContextMenuInfo menuInfo) {
         alunoRepository.confirmaExclusaoAluno(menuInfo);

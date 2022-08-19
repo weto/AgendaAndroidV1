@@ -60,14 +60,6 @@ public class ListaAlunosAdapter extends BaseAdapter {
                 .inflate(R.layout.item_aluno, parent, false);
     }
 
-    private void clear() {
-        alunos.clear();
-    }
-
-    private void addAll(List<Aluno> todos) {
-        alunos.addAll(todos);
-    }
-
     public void atualiza(List<Aluno> alunos) {
         this.alunos.clear();
         this.alunos.addAll(alunos);

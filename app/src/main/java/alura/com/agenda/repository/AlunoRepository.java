@@ -6,6 +6,10 @@ import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.lifecycle.Observer;
+
+import java.util.List;
+
 import alura.com.agenda.R;
 import alura.com.agenda.dao.AlunoDAO;
 import alura.com.agenda.model.Aluno;
@@ -16,7 +20,6 @@ import alura.com.agenda.ui.viewmodel.AlunoViewModel;
 public class AlunoRepository implements IAlunoRepository {
     private Context context;
     private AlunoDAO dao = new AlunoDAO();
-    private AlunoViewModel provedor;
     private ListaAlunosView listaAlunosView;
     private ListaAlunosAdapter adapter;
     private Aluno aluno;
