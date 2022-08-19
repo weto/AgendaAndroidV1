@@ -20,7 +20,6 @@ public class AlunoViewModel extends ViewModel {
     private ListView alunosListView;
     private ListaAlunosView listaAlunosView;
 
-
     public AlunoViewModel() {
         Log.i("viewmodel", "criando viewmodel");
     }
@@ -30,10 +29,4 @@ public class AlunoViewModel extends ViewModel {
         super.onCleared();
         Log.i("viewmodel", "destruindo viewmodel");
     }
-
-
-
-
-
-
 }

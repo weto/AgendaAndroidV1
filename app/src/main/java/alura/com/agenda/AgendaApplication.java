@@ -9,7 +9,5 @@ public class AgendaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AlunoDAO dao = new AlunoDAO();
-        dao.salvar(new Aluno("testesss","eee","teste@gamil"));
     }
 }

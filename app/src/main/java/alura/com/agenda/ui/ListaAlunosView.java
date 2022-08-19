@@ -2,6 +2,7 @@ package alura.com.agenda.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 import android.widget.AdapterView;
 
 import alura.com.agenda.dao.AlunoDAO;
@@ -21,13 +22,13 @@ public class ListaAlunosView {
 
     public void confirmaExclusaoAluno(AdapterView.AdapterContextMenuInfo menuInfo) {
         new AlertDialog.Builder(context)
-                .setTitle("Tem certeza que deseja excluir o aluno?")
-                .setPositiveButton("Sim", (dialog, which) -> {
-                    Aluno alunoEscolhido = (Aluno) adapter.getItem(menuInfo.position);
-                    remove(alunoEscolhido);
-                })
-                .setNegativeButton("Não", null)
-                .show();
+            .setTitle("Tem certeza que deseja excluir o aluno?")
+            .setPositiveButton("Sim", (dialog, which) -> {
+                Aluno alunoEscolhido = (Aluno) adapter.getItem(menuInfo.position);
+                remove(alunoEscolhido);
+            })
+            .setNegativeButton("Não", null)
+            .show();
     }
 
     private void remove(Aluno alunoSelecionado) {
