@@ -8,16 +8,21 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import alura.com.agenda.R;
 import alura.com.agenda.model.Aluno;
 import alura.com.agenda.repository.AlunoRepository;
+import alura.com.agenda.ui.viewmodel.AlunoViewModel;
+import alura.com.agenda.ui.viewmodel.factory.AlunoViewModelFactor;
 
 public class FormularioAlunoActivity extends AppCompatActivity implements Constantes {
     private EditText campoNome;
     private EditText campoTelefone;
     private EditText campoEmail;
-    private AlunoRepository alunoRepository;
+
+    private AlunoViewModel provedor;
+    private AlunoViewModelFactor factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +35,16 @@ public class FormularioAlunoActivity extends AppCompatActivity implements Consta
         campoNome = findViewById(R.id.activity_formulario_aluno_nome);
         campoTelefone = findViewById(R.id.activity_formulario_aluno_telefone);
         campoEmail = findViewById(R.id.activity_formulario_aluno_email);
-        alunoRepository = new AlunoRepository(this);
+        this.factory = new AlunoViewModelFactor(new AlunoRepository(this));
+        this.provedor = new ViewModelProvider(this, factory).get(AlunoViewModel.class);
         configuraTela();
     }
 
     private void configuraTela() {
         Intent dados = getIntent();
         Aluno aluno = (Aluno) dados.getSerializableExtra(CHAVE_ALUNO);
-        alunoRepository.setAluno(aluno);
-        if(alunoRepository.getAluno() != null) {
+        provedor.setAluno(aluno);
+        if(provedor.getAluno() != null) {
             setTitle(TITULO_APPBAR_EDICAO);
             campoNome.setText(aluno.getNome());
             campoTelefone.setText(aluno.getTelefone());
@@ -53,7 +59,7 @@ public class FormularioAlunoActivity extends AppCompatActivity implements Consta
         String telefone = campoTelefone.getText().toString();
         String email = campoEmail.getText().toString();
         configuraAluno(nome, telefone, email);
-        alunoRepository.salvaAluno();
+        provedor.salvaAluno();
     }
 
     @Override
@@ -73,11 +79,11 @@ public class FormularioAlunoActivity extends AppCompatActivity implements Consta
     }
 
     private void configuraAluno(String nome, String telefone, String email) {
-        if(alunoRepository.getAluno() == null) {
-            alunoRepository.setAluno(new Aluno());
+        if(provedor.getAluno() == null) {
+            provedor.setAluno(new Aluno());
         }
-        alunoRepository.getAluno().setNome(nome);
-        alunoRepository.getAluno().setTelefone(telefone);
-        alunoRepository.getAluno().setEmail(email);
+        provedor.getAluno().setNome(nome);
+        provedor.getAluno().setTelefone(telefone);
+        provedor.getAluno().setEmail(email);
     }
 }

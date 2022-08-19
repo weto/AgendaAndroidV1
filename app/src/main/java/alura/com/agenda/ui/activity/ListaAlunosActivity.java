@@ -17,17 +17,15 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import alura.com.agenda.R;
-import alura.com.agenda.dao.AlunoDAO;
 import alura.com.agenda.model.Aluno;
 import alura.com.agenda.repository.AlunoRepository;
-import alura.com.agenda.ui.ListaAlunosView;
-import alura.com.agenda.ui.adapter.ListaAlunosAdapter;
 import alura.com.agenda.ui.viewmodel.AlunoViewModel;
+import alura.com.agenda.ui.viewmodel.factory.AlunoViewModelFactor;
 
 public class ListaAlunosActivity extends AppCompatActivity implements Constantes {
     private ListView alunosListView;
     private AlunoViewModel provedor;
-    private AlunoRepository alunoRepository;
+    private AlunoViewModelFactor factory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,8 +34,6 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
         setTitle(TITULO_APPBAR_PRINCIPAL);
         carregaTodosalunos();
         configuraFabNovoAluno();
-        provedor = new ViewModelProvider(this).get(AlunoViewModel.class);
-        Log.i("viewmodel", "onCreate: "+ provedor.toString());
     }
 
     @Override
@@ -58,7 +54,7 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
     @Override
     protected void onResume() {
         super.onResume();
-        alunoRepository.listarAlunosAtualizada();
+        provedor.listarAlunosAtualizada();
     }
 
     private void carregaTodosalunos() {
@@ -68,8 +64,9 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
 
     private void carregaDados() {
         alunosListView = findViewById(R.id.activity_lista_alunos_listview);
-        alunoRepository = new AlunoRepository(this);
-        alunoRepository.listagemAlunoInicial(alunosListView);
+        this.factory = new AlunoViewModelFactor(new AlunoRepository(this));
+        this.provedor = new ViewModelProvider(this, factory).get(AlunoViewModel.class);
+        this.provedor.listagemAlunoInicial(alunosListView);
         registerForContextMenu(alunosListView);
     }
 
@@ -78,7 +75,7 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
         if(itemId == R.id.activity_lista_alunos_menu_remover) {
-            alunoRepository.confirmaExclusaoAluno(menuInfo);
+            this.provedor.confirmaExclusaoAluno(menuInfo);
         }
         return super.onContextItemSelected(item);
     }
