@@ -19,6 +19,7 @@ public class AlunoRepository implements IAlunoRepository {
     private AlunoViewModel provedor;
     private ListaAlunosView listaAlunosView;
     private ListaAlunosAdapter adapter;
+    private Aluno aluno;
 
     public AlunoRepository(Context context) {
         this.context = context;
@@ -43,5 +44,22 @@ public class AlunoRepository implements IAlunoRepository {
     @Override
     public void confirmaExclusaoAluno(AdapterView.AdapterContextMenuInfo menuInfo) {
         listaAlunosView.confirmaExclusaoAluno(menuInfo);
+    }
+
+    @Override
+    public void salvaAluno() {
+        if(getAluno().getId() == null) {
+            dao.salvar(getAluno());
+        } else {
+            dao.editar(getAluno());
+        }
+    }
+
+    public Aluno getAluno(){
+        return this.aluno;
+    }
+
+    public void setAluno(Aluno aluno){
+        this.aluno = aluno;
     }
 }

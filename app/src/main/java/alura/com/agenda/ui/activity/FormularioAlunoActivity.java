@@ -10,15 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import alura.com.agenda.R;
-import alura.com.agenda.dao.AlunoDAO;
 import alura.com.agenda.model.Aluno;
+import alura.com.agenda.repository.AlunoRepository;
 
 public class FormularioAlunoActivity extends AppCompatActivity implements Constantes {
-    private Aluno aluno;
     private EditText campoNome;
     private EditText campoTelefone;
     private EditText campoEmail;
-    final AlunoDAO dao = new AlunoDAO();
+    private AlunoRepository alunoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +30,15 @@ public class FormularioAlunoActivity extends AppCompatActivity implements Consta
         campoNome = findViewById(R.id.activity_formulario_aluno_nome);
         campoTelefone = findViewById(R.id.activity_formulario_aluno_telefone);
         campoEmail = findViewById(R.id.activity_formulario_aluno_email);
-        carregaDadosAlunoExistente();
+        alunoRepository = new AlunoRepository(this);
+        configuraTela();
     }
 
-    private void carregaDadosAlunoExistente() {
+    private void configuraTela() {
         Intent dados = getIntent();
-        aluno = (Aluno) dados.getSerializableExtra(CHAVE_ALUNO);
-        if(aluno != null) {
+        Aluno aluno = (Aluno) dados.getSerializableExtra(CHAVE_ALUNO);
+        alunoRepository.setAluno(aluno);
+        if(alunoRepository.getAluno() != null) {
             setTitle(TITULO_APPBAR_EDICAO);
             campoNome.setText(aluno.getNome());
             campoTelefone.setText(aluno.getTelefone());
@@ -51,11 +52,8 @@ public class FormularioAlunoActivity extends AppCompatActivity implements Consta
         String nome = campoNome.getText().toString();
         String telefone = campoTelefone.getText().toString();
         String email = campoEmail.getText().toString();
-        alunoExiste();
-        aluno.setNome(nome);
-        aluno.setTelefone(telefone);
-        aluno.setEmail(email);
-        salvaAluno();
+        configuraAluno(nome, telefone, email);
+        alunoRepository.salvaAluno();
     }
 
     @Override
@@ -63,6 +61,7 @@ public class FormularioAlunoActivity extends AppCompatActivity implements Consta
         int itemId = item.getItemId();
         if(itemId == R.id.activity_formulario_aluno_menu_salva) {
             criaEditaAluno();
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -73,16 +72,12 @@ public class FormularioAlunoActivity extends AppCompatActivity implements Consta
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void alunoExiste() {
-        aluno = aluno == null ? new Aluno(): aluno;
-    }
-
-    private void salvaAluno() {
-        if(aluno.getId() == null) {
-            dao.salvar(aluno);
-        } else {
-            dao.editar(aluno);
+    private void configuraAluno(String nome, String telefone, String email) {
+        if(alunoRepository.getAluno() == null) {
+            alunoRepository.setAluno(new Aluno());
         }
-        finish();
+        alunoRepository.getAluno().setNome(nome);
+        alunoRepository.getAluno().setTelefone(telefone);
+        alunoRepository.getAluno().setEmail(email);
     }
 }

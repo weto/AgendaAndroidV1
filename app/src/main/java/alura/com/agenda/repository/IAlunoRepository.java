@@ -11,6 +11,7 @@ public interface IAlunoRepository {
 
     void listagemAlunoInicial(ListView alunosListView);
     void listarAlunosAtualizada();
-
     void confirmaExclusaoAluno(AdapterView.AdapterContextMenuInfo menuInfo);
+
+    void salvaAluno();
 }
