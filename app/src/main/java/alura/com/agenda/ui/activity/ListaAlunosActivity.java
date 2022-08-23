@@ -5,6 +5,7 @@ import android.database.Observable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -106,5 +108,23 @@ public class ListaAlunosActivity extends AppCompatActivity implements Constantes
             intent.putExtra(CHAVE_ALUNO, alunoSelecionado);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == R.id.activity_formulario_aluno_menu_salva) {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.signOut();
+            Log.i("Logout feito", "onOptionsItemSelected: ");
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_lista_alunos_logout_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
